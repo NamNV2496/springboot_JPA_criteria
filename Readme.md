@@ -65,6 +65,40 @@ Content-Type: application/json
     "fieldType": 3
   }
 ]
+
+// request: sql select * from item where item_name like "%tes%" order by item_price DESC
+
+GET http://localhost:8080/custom
+Content-Type: application/json
+
+
+[
+  {
+    "field": "itemPrice",
+    "value": "desc",
+    "fieldType": 4
+  },
+  {
+    "field": "itemName",
+    "value": "tes",
+    "fieldType": 3
+  }
+]
+
+// select *, count(id) from item it where item_name like "%tes%" group by item_price
+
+[
+  {
+    "field": "id",
+    "value": "1",
+    "fieldType": 5
+  },
+  {
+    "field": "itemName",
+    "value": "tes",
+    "fieldType": 3
+  }
+]
 ```
 ![img.png](img.png)
 
@@ -74,4 +108,5 @@ Content-Type: application/json
     CriteriaQuery: is return object (select * or select item)
     CriteriaBuilder: suppor to build query
 
+[Reference link](https://topdev.vn/blog/hibernate-criteria-query-language-hcql/)
 

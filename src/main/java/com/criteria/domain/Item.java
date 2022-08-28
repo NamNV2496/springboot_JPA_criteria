@@ -20,6 +20,6 @@ public class Item implements Serializable {
     private Long id;
     private String itemName;
     private String itemDescription;
-    private Integer itemPrice;
+    private int itemPrice;
 
 }

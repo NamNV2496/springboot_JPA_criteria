@@ -5,17 +5,14 @@ import com.criteria.domain.Item;
 import com.criteria.domain.Item_;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemCriteria {
 
     public static Specification<Item> generateQuery() {
-        return (Root<Item> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder cb) -> cb.and(
+        return (Root<Item> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> cb.and(
                 cb.equal(root.get(Item_.ID), 1),
                 cb.greaterThan(root.get(Item_.ITEM_PRICE), 100)
         );
@@ -24,69 +21,48 @@ public class ItemCriteria {
     public static <T extends Field> Specification<Item> generateQueryWithCustomize(List<T> data) {
         List<Predicate> list = new ArrayList<>();
 
-        return (Root<Item> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder cb) -> {
+        return (root, cq, cb) -> {
             data.forEach(dt -> {
-                if (!dt.getField().isEmpty()) {
+                if (!dt.getField().isEmpty() && !dt.getValue().isEmpty()) {
                     switch (dt.getFieldType()) {
+                        case EQUAL:
+                            list.add(cb.equal(root.get(dt.getField()), dt.getValue()));
+                            break;
                         case GREATER_THAN:
-                            switch (dt.getField()) {
-                                case Item_.ID:
-                                    list.add(cb.greaterThan(root.get(Item_.ID), dt.getValue()));
-                                    break;
-                                case Item_.ITEM_PRICE:
-                                    list.add(cb.greaterThan(root.get(Item_.ITEM_PRICE), dt.getValue()));
-                                    break;
-                                case Item_.ITEM_NAME:
-                                    list.add(cb.greaterThan(root.get(Item_.ITEM_NAME), dt.getValue()));
-                                    break;
-                                default:
-                                    break;
-                            }
+//                                cb.ge() >=
+//                                cb.le <=
+                            list.add(cb.greaterThan(root.get(dt.getField()), dt.getValue()));
                             break;
                         case LESS_THAN:
-                            switch (dt.getField()) {
-                                case Item_.ID:
-                                    list.add(cb.lessThan(root.get(Item_.ID), dt.getValue()));
-                                    break;
-                                case Item_.ITEM_PRICE:
-                                    list.add(cb.lessThan(root.get(Item_.ITEM_PRICE), dt.getValue()));
-                                    break;
-                                case Item_.ITEM_NAME:
-                                    list.add(cb.lessThan(root.get(Item_.ITEM_NAME), dt.getValue()));
-                                    break;
-                                default:
-                                    break;
-                            }
+                            list.add(cb.lessThan(root.get(dt.getField()), dt.getValue()));
                             break;
                         case LIKE:
+                            list.add(cb.like(root.get(dt.getField()), "%" + dt.getValue() + "%"));
+                            break;
+                        case ORDER_BY:
+                            if (dt.getValue().equals("asc")) {
+                                cq.orderBy(cb.asc(root.get(dt.getField())));
+                            } else {
+                                cq.orderBy(cb.desc(root.get(dt.getField())));
+                            }
+                            break;
+                        case GROUP_BY:
                             switch (dt.getField()) {
                                 case Item_.ID:
-                                    list.add(cb.like(root.get(Item_.ID), "%" + dt.getValue() + "%"));
-                                    break;
                                 case Item_.ITEM_PRICE:
-                                    list.add(cb.like(root.get(Item_.ITEM_PRICE), "%" + dt.getValue() + "%"));
+                                    Expression < Long > groupByExp = cb.function("Long", Long.class, root.get(dt.getField())).as(Long.class);
+                                    cq.groupBy(groupByExp);
                                     break;
                                 case Item_.ITEM_NAME:
-                                    list.add(cb.like(root.get(Item_.ITEM_NAME), "%" + dt.getValue() + "%"));
+                                case Item_.ITEM_DESCRIPTION:
+                                    Expression < String > groupByExpString = cb.function("String", String.class, root.get(dt.getField())).as(String.class);
+                                    cq.groupBy(groupByExpString);
                                     break;
                                 default:
                                     break;
                             }
                             break;
                         default:
-                            switch (dt.getField()) {
-                                case Item_.ID:
-                                    list.add(cb.equal(root.get(Item_.ID), dt.getValue()));
-                                    break;
-                                case Item_.ITEM_PRICE:
-                                    list.add(cb.equal(root.get(Item_.ITEM_PRICE), dt.getValue()));
-                                    break;
-                                case Item_.ITEM_NAME:
-                                    list.add(cb.equal(root.get(Item_.ITEM_NAME), dt.getValue()));
-                                    break;
-                                default:
-                                    break;
-                            }
                             break;
                     }
                 }
@@ -94,4 +70,5 @@ public class ItemCriteria {
             return cb.and(list.toArray(new Predicate[]{}));
         };
     }
+
 }
