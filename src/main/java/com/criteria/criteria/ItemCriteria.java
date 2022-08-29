@@ -53,8 +53,8 @@ public class ItemCriteria {
                             switch (dt.getField()) {
                                 case Item_.ID:
                                 case Item_.ITEM_PRICE:
-                                    Expression<Long> groupByExp = cb.function("Long", Long.class, root.get(dt.getField())).as(Long.class);
-                                    cq.groupBy(groupByExp);
+                                    cq.multiselect(root.get(Item_.ID), cb.count(root)).groupBy(root.get(Item_.ITEM_PRICE));
+//                                    Expression<Long> groupByExp = cb.function("Long", Long.class, root.get(dt.getField())).as(Long.class);
                                     break;
                                 case Item_.ITEM_NAME:
                                 case Item_.ITEM_DESCRIPTION:

@@ -89,13 +89,13 @@ Content-Type: application/json
 
 [
   {
-    "field": "id",
+    "field": "itemPrice",
     "value": "1",
     "fieldType": 5
   },
   {
     "field": "itemName",
-    "value": "tes",
+    "value": "%tes%",
     "fieldType": 3
   }
 ]
