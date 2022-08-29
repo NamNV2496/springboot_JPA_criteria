@@ -99,6 +99,11 @@ Content-Type: application/json
     "fieldType": 3
   }
 ]
+
+// select * from item it order by id DESC
+// get page 0 with 2 elements
+GET http://localhost:8080/page?page=0&size=2&sort="id",DESC
+
 ```
 ![img.png](img.png)
 

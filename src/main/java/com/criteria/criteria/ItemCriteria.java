@@ -20,6 +20,9 @@ public class ItemCriteria {
 
     public static <T extends Field> Specification<Item> generateQueryWithCustomize(List<T> data) {
         List<Predicate> list = new ArrayList<>();
+        if (data == null) {
+            return null;
+        }
 
         return (root, cq, cb) -> {
             data.forEach(dt -> {
@@ -50,12 +53,12 @@ public class ItemCriteria {
                             switch (dt.getField()) {
                                 case Item_.ID:
                                 case Item_.ITEM_PRICE:
-                                    Expression < Long > groupByExp = cb.function("Long", Long.class, root.get(dt.getField())).as(Long.class);
+                                    Expression<Long> groupByExp = cb.function("Long", Long.class, root.get(dt.getField())).as(Long.class);
                                     cq.groupBy(groupByExp);
                                     break;
                                 case Item_.ITEM_NAME:
                                 case Item_.ITEM_DESCRIPTION:
-                                    Expression < String > groupByExpString = cb.function("String", String.class, root.get(dt.getField())).as(String.class);
+                                    Expression<String> groupByExpString = cb.function("String", String.class, root.get(dt.getField())).as(String.class);
                                     cq.groupBy(groupByExpString);
                                     break;
                                 default:
@@ -70,5 +73,4 @@ public class ItemCriteria {
             return cb.and(list.toArray(new Predicate[]{}));
         };
     }
-
 }
