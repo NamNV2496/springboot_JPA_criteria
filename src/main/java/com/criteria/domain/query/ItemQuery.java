@@ -1,4 +1,4 @@
-package com.criteria.domain;
+package com.criteria.domain.query;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Data
@@ -14,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "item")
-public class Item {
+public class ItemQuery {
 
     @Id
     @GeneratedValue
@@ -23,5 +22,7 @@ public class Item {
     private String itemName;
     private String itemDescription;
     private int itemPrice;
+    @OneToOne(mappedBy = "itemQuery")
+    private FolderQuery folderQuery;
 
 }

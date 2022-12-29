@@ -6,12 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Field {
+@Entity
+@Table(name = "field")
+public class Folder {
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @OneToOne()
+    @JoinColumn(name = "item_id")
+    private Item item;
 
     private String field;
     private String value;
