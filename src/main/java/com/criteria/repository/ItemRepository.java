@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface ItemRepository extends JpaRepository<Item, Long>, JpaSpecificationExecutor<FolderQuery> {
-    List<FolderQuery> findAll(Specification<FolderQuery> query);
+public interface ItemRepository extends JpaRepository<Item, Long>, JpaSpecificationExecutor<ItemQuery> {
+//    List<ItemQuery> findAll(Specification<ItemQuery> query);
 }

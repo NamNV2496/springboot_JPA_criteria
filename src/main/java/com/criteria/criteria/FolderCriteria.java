@@ -15,13 +15,13 @@ import java.util.List;
 
 public class FolderCriteria {
 
-    public static <T extends Field, U> Specification<FolderQuery> generateQueryWithCustomize(List<T> data) {
+    public static <T extends Field, U> Specification<U> generateQueryWithCustomize(List<T> data) {
         List<Predicate> list = new ArrayList<>();
         if (data == null) {
             return null;
         }
 
-        return (Root<FolderQuery> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> {
+        return (Root<U> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> {
             data.forEach(dt -> {
                 if (!dt.getField().isEmpty() && !dt.getValue().isEmpty()) {
                     switch (dt.getFieldType()) {

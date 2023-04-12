@@ -155,3 +155,10 @@ curl --location --request GET 'http://localhost:8080/oneToMany/get3'
 
 [Reference link](https://topdev.vn/blog/hibernate-criteria-query-language-hcql/)
 
+
+# Specifications
+
+    curl --location 'http://localhost:8080/get'
+
+    curl --location 'http://localhost:8080/subquery'
+

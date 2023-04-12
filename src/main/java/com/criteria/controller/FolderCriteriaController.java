@@ -9,6 +9,7 @@ import com.criteria.domain.Item;
 import com.criteria.domain.query.FolderQuery;
 import com.criteria.domain.query.ItemQuery;
 import com.criteria.repository.ExtendsPageableAndSortingRepository;
+import com.criteria.repository.FolderRepository;
 import com.criteria.repository.ItemRepository;
 import com.criteria.service.OneToOneService;
 import lombok.RequiredArgsConstructor;
@@ -27,17 +28,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FolderCriteriaController {
     private final ItemRepository itemRepository;
+    private final FolderRepository folderRepository;
     private final OneToOneService oneToOneService;
 
     @GetMapping("/test")
-    public Folder test() {
+    public FolderQuery test() {
         return oneToOneService.getItem();
     }
 
     @GetMapping
     public List<FolderQuery> getItem() {
         Specification<FolderQuery> query = ItemCriteria.generateQuery();
-        return itemRepository.findAll(query);
+        return folderRepository.findAll(query);
     }
 
     @GetMapping("/custom")
@@ -47,19 +49,19 @@ public class FolderCriteriaController {
             listData.add(new Field("itemName", "item", FieldType.LIKE));
         }
         Specification<FolderQuery> query = FolderCriteria.generateQueryWithCustomize(listData);
-        return itemRepository.findAll(query);
+        return folderRepository.findAll(query);
     }
 
-//    @GetMapping("/page")
-//    public Page<ItemQuery> getPage(Pageable pageable) {
-//        List<Field> list = new ArrayList<>();
-//        Specification<ItemQuery> spec = FolderCriteria.generateQueryWithCustomize(list);
-//        List<Sort.Order> orders = new ArrayList<>();
-//
-//        Page<ItemQuery> ret = itemRepository.findAll(spec, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(orders)));
-//        System.out.println("TEST: List " + ret.getContent() + "PAGE NUMBER IS: " + ret.getNumber());
-//        return ret;
-//    }
+    @GetMapping("/page")
+    public Page<ItemQuery> getPage(@RequestParam Integer page, @RequestParam Integer size) {
+        List<Field> list = new ArrayList<>();
+        Specification<ItemQuery> spec = FolderCriteria.generateQueryWithCustomize(list);
+        List<Sort.Order> orders = new ArrayList<>();
+
+        Page<ItemQuery> ret = itemRepository.findAll(spec, PageRequest.of(page, size, Sort.by(orders)));
+        System.out.println("TEST: List " + ret.getContent() + "PAGE NUMBER IS: " + ret.getNumber());
+        return ret;
+    }
 //
 //    // other way
 //    private final ExtendsPageableAndSortingRepository exRepository;

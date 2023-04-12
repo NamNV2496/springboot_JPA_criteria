@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@Table(name = "many")
 public class Many {
 
     @Id
@@ -15,8 +16,6 @@ public class Many {
     private Long id;
     private String name;
 
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "one_id", referencedColumnName = "id")
-    private One one1;
+    @Column(name = "one_id")
+    private Long oneId;
 }
