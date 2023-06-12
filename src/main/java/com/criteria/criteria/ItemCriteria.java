@@ -1,8 +1,11 @@
 package com.criteria.criteria;
 
 import com.criteria.domain.Field;
+import com.criteria.domain.Folder_;
 import com.criteria.domain.Item;
 import com.criteria.domain.Item_;
+import com.criteria.domain.query.FolderQuery;
+import com.criteria.domain.query.FolderQuery_;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
@@ -15,6 +18,12 @@ public class ItemCriteria {
         return (Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> cb.and(
                 cb.equal(root.get(Item_.ID), 1),
                 cb.greaterThan(root.get(Item_.ITEM_PRICE), 100)
+        );
+    }
+
+    public static Specification<FolderQuery> generateQuery(String name) {
+        return (Root<FolderQuery> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> cb.and(
+                cb.like(root.get(FolderQuery_.NAME), '%' + name + '%')
         );
     }
 

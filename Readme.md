@@ -162,3 +162,16 @@ curl --location --request GET 'http://localhost:8080/oneToMany/get3'
 
     curl --location 'http://localhost:8080/subquery'
 
+
+# How to escape a specification characters in java
+
+    GET http://localhost:8080/folder
+
+we will find and add 2 '%' in before and after that character.
+
+    String name = '%' + "r_".replace("_", "%_%") + '%';
+    
+    select * from folder folderquer0_ where folderquer0_.name like name
+
+
+![img_2.png](img_2.png)

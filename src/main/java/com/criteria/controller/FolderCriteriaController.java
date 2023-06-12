@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/folder")
@@ -38,7 +39,8 @@ public class FolderCriteriaController {
 
     @GetMapping
     public List<FolderQuery> getItem() {
-        Specification<FolderQuery> query = ItemCriteria.generateQuery();
+        String name = "r_".replace("_", "%_%");
+        Specification<FolderQuery> query = ItemCriteria.generateQuery(name);
         return folderRepository.findAll(query);
     }
 
